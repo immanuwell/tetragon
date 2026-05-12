@@ -83,6 +83,8 @@ type genericUprobe struct {
 	argReturnPrinters []argPrinter
 	// tags field of the Tracing Policy
 	tags []string
+	// digests field of the Tracing Policy
+	digests []string
 
 	// for uprobes that have a retprobe, we maintain the enter events in
 	// the map, so that we can merge them when the return event is
@@ -264,6 +266,7 @@ func loadSingleUprobeSensor(uprobeEntry *genericUprobe, args sensors.LoadProbeAr
 		Offset:       uprobeEntry.offset,
 		Address:      uprobeEntry.address,
 		RefCtrOffset: uprobeEntry.refCtrOffset,
+		Digests:      uprobeEntry.digests,
 	}
 	load.SetAttachData(attachData)
 
@@ -289,6 +292,7 @@ func loadMultiUprobeSensor(ids []idtable.EntryID, args sensors.LoadProbeArgs) er
 	load := args.Load
 	data := &program.MultiUprobeAttachData{}
 	data.Attach = make(map[string]*program.MultiUprobeAttachSymbolsCookies)
+	data.Digests = make(map[string][]string)
 
 	for index, id := range ids {
 		uprobeEntry, err := genericUprobeTableGet(id)
@@ -365,6 +369,8 @@ func loadMultiUprobeSensor(ids []idtable.EntryID, args sensors.LoadProbeArgs) er
 		attach.Cookies = append(attach.Cookies, uint64(index))
 
 		data.Attach[uprobeEntry.path] = attach
+
+		data.Digests[uprobeEntry.path] = uprobeEntry.digests
 	}
 
 	load.SetAttachData(data)
@@ -790,6 +796,7 @@ func addUprobe(spec *v1alpha1.UProbeSpec, ids []idtable.EntryID, in *addUprobeIn
 			argPrinters:       argPrinters,
 			argReturnPrinters: argReturnPrinters,
 			tags:              tagsField,
+			digests:           spec.Digests,
 			pendingEvents:     nil,
 		}
 
