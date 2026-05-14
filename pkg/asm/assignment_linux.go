@@ -63,26 +63,41 @@ func (sc *RegScanner) Scan(state fmt.ScanState, _ rune) error {
 
 func parseRegDeref(str string, ass *Assignment) error {
 	var (
-		off int64
-		reg RegScanner
-		n   int
+		off uint64
+		err error
 		ok  bool
 	)
 
-	if n, _ = fmt.Sscanf(str, "0x%x(%%%s)", &off, &reg); n != 2 {
-		if n, _ = fmt.Sscanf(str, "%d(%%%s)", &off, &reg); n != 2 {
-			if n, _ = fmt.Sscanf(str, "(%%%s)", reg.Reset()); n != 1 {
-				return errNext
-			}
+	if !strings.HasSuffix(str, ")") {
+		return errNext
+	}
+
+	open := strings.Index(str, "(%")
+	if open < 0 {
+		return errNext
+	}
+
+	reg := str[open+2 : len(str)-1]
+	if reg == "" {
+		return errNext
+	}
+
+	if offStr := str[:open]; offStr != "" {
+		off, err = parseOffset(offStr)
+		if err != nil {
+			return errNext
 		}
 	}
 
-	ass.Type = ASM_ASSIGNMENT_TYPE_REG_DEREF
-	ass.Off = uint64(off)
-	ass.Src, ass.SrcSize, ok = RegOffsetSize(reg.name)
+	src, srcSize, ok := RegOffsetSize(reg)
 	if !ok {
-		return fmt.Errorf("failed to parse register '%s'", reg.name)
+		return fmt.Errorf("failed to parse register '%s'", reg)
 	}
+
+	ass.Type = ASM_ASSIGNMENT_TYPE_REG_DEREF
+	ass.Off = off
+	ass.Src = src
+	ass.SrcSize = srcSize
 	return nil
 }
 
@@ -147,6 +162,31 @@ func parseConst(str string, ass *Assignment) error {
 	ass.Type = ASM_ASSIGNMENT_TYPE_CONST
 	ass.Off = uoff
 	return nil
+}
+
+func parseOffset(str string) (uint64, error) {
+	if str == "" {
+		return 0, strconv.ErrSyntax
+	}
+
+	if strings.HasPrefix(str, "-") {
+		off, err := strconv.ParseInt(str, 0, 64)
+		if err != nil {
+			return 0, err
+		}
+		return uint64(off), nil
+	}
+
+	off, err := strconv.ParseUint(str, 0, 64)
+	if err == nil {
+		return off, nil
+	}
+
+	soff, serr := strconv.ParseInt(str, 0, 64)
+	if serr != nil {
+		return 0, err
+	}
+	return uint64(soff), nil
 }
 
 func ParseAssignment(str string) (*Assignment, error) {
