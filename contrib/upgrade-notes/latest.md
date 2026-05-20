@@ -11,7 +11,7 @@ Depending on your setup, changes listed here might require a manual intervention
 
 ### Helm Values
 
-* TBD
+* `exportDirectory` default value has been updated to `/var/log/tetragon` from `/var/run/cilium/tetragon/` to avoid writing to tmpfs.
 
 ### TracingPolicy (k8s CRD)
 
