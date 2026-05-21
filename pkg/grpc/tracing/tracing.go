@@ -874,6 +874,7 @@ type MsgGenericUprobeUnix struct {
 	Path         string
 	Symbol       string
 	Offset       uint64
+	Address      uint64
 	RefCtrOffset uint64
 	PolicyName   string
 	Message      string
