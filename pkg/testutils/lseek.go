@@ -9,6 +9,8 @@ import (
 	"os/exec"
 	"strings"
 	"testing"
+
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 )
 
 type LseekPipeCmd struct {
@@ -20,7 +22,7 @@ type LseekPipeCmd struct {
 //
 //revive:disable:context-as-argument
 func NewLseekPipe(t *testing.T, ctx context.Context) *LseekPipeCmd {
-	bin := RepoRootPath("contrib/tester-progs/lseek-pipe")
+	bin := repo.RootPath("contrib/tester-progs/lseek-pipe")
 	cmd := exec.CommandContext(ctx, bin)
 	pipes, err := NewCmdBufferedPipes(cmd)
 	if err != nil {

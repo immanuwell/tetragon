@@ -38,6 +38,7 @@ import (
 	"github.com/cilium/tetragon/pkg/sensors"
 	"github.com/cilium/tetragon/pkg/testutils"
 	"github.com/cilium/tetragon/pkg/testutils/policytest"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 	tus "github.com/cilium/tetragon/pkg/testutils/sensors"
 	"github.com/cilium/tetragon/pkg/tracingpolicy"
 	_ "github.com/cilium/tetragon/tests/policytests"
@@ -182,7 +183,7 @@ func TestUprobeMultipleTargets(t *testing.T) {
 }
 
 func TestUretprobeGeneric(t *testing.T) {
-	testUretprobe := testutils.RepoRootPath("contrib/tester-progs/uretprobe")
+	testUretprobe := repo.RootPath("contrib/tester-progs/uretprobe")
 	uretprobeHook := `
 apiVersion: cilium.io/v1alpha1
 kind: TracingPolicy
@@ -233,7 +234,7 @@ spec:
 }
 
 func TestUretprobeRetCopy(t *testing.T) {
-	testUretprobe := testutils.RepoRootPath("contrib/tester-progs/uretprobe")
+	testUretprobe := repo.RootPath("contrib/tester-progs/uretprobe")
 	uretprobeHook := `
 apiVersion: cilium.io/v1alpha1
 kind: TracingPolicy
@@ -344,8 +345,8 @@ func TestUprobePidMatchNot(t *testing.T) {
 }
 
 func uprobeBinariesMatch(t *testing.T, execBinary string) error {
-	uprobeTest1 := testutils.RepoRootPath("contrib/tester-progs/uprobe-test-1")
-	libUprobe := testutils.RepoRootPath("contrib/tester-progs/libuprobe.so")
+	uprobeTest1 := repo.RootPath("contrib/tester-progs/uprobe-test-1")
+	libUprobe := repo.RootPath("contrib/tester-progs/libuprobe.so")
 
 	pathHook := `
 apiVersion: cilium.io/v1alpha1
@@ -393,13 +394,13 @@ spec:
 }
 
 func TestUprobeBinariesMatch(t *testing.T) {
-	uprobeTest1 := testutils.RepoRootPath("contrib/tester-progs/uprobe-test-1")
+	uprobeTest1 := repo.RootPath("contrib/tester-progs/uprobe-test-1")
 	err := uprobeBinariesMatch(t, uprobeTest1)
 	require.NoError(t, err)
 }
 
 func TestUprobeBinariesMatchNot(t *testing.T) {
-	uprobeTest2 := testutils.RepoRootPath("contrib/tester-progs/uprobe-test-2")
+	uprobeTest2 := repo.RootPath("contrib/tester-progs/uprobe-test-2")
 	err := uprobeBinariesMatch(t, uprobeTest2)
 	require.Error(t, err)
 }
@@ -413,7 +414,7 @@ func TestUprobeCloneThreads(t *testing.T) {
 	defer cancel()
 
 	testBinPath := "contrib/tester-progs/threads-tester"
-	testBin := testutils.RepoRootPath(testBinPath)
+	testBin := repo.RootPath(testBinPath)
 
 	uprobeHook := `
 apiVersion: cilium.io/v1alpha1
@@ -502,8 +503,8 @@ spec:
 }
 
 var (
-	uprobeArgsBinary  = testutils.RepoRootPath("contrib/tester-progs/uprobe-test-1")
-	uprobeArgsLib     = testutils.RepoRootPath("contrib/tester-progs/libuprobe.so")
+	uprobeArgsBinary  = repo.RootPath("contrib/tester-progs/uprobe-test-1")
+	uprobeArgsLib     = repo.RootPath("contrib/tester-progs/libuprobe.so")
 	uprobeArgsSymbols = []string{
 		"uprobe_test_lib_arg1",
 		"uprobe_test_lib_arg2",
@@ -800,8 +801,8 @@ func uprobePreloadArgs(t *testing.T, arg_idx int, arg_value string) {
 
 	symbol := "uprobe_test_lib_string_arg" + strconv.Itoa(arg_idx)
 
-	uprobeTest1 := testutils.RepoRootPath("contrib/tester-progs/uprobe-test-1")
-	libUprobe := testutils.RepoRootPath("contrib/tester-progs/libuprobe.so")
+	uprobeTest1 := repo.RootPath("contrib/tester-progs/uprobe-test-1")
+	libUprobe := repo.RootPath("contrib/tester-progs/libuprobe.so")
 
 	var pathHook strings.Builder
 	pathHook.WriteString(`
@@ -884,8 +885,8 @@ func TestUprobePreloadArg4(t *testing.T) {
 }
 
 func uprobeArgsMatch(t *testing.T, symbol string, arg_type string, op string, values []string, expectCheckerFailure bool) error {
-	uprobeTest1 := testutils.RepoRootPath("contrib/tester-progs/uprobe-test-1")
-	libUprobe := testutils.RepoRootPath("contrib/tester-progs/libuprobe.so")
+	uprobeTest1 := repo.RootPath("contrib/tester-progs/uprobe-test-1")
+	libUprobe := repo.RootPath("contrib/tester-progs/libuprobe.so")
 
 	pathHook := `
 apiVersion: cilium.io/v1alpha1
@@ -1046,7 +1047,7 @@ func TestUprobeResolveCurrent(t *testing.T) {
 		t.Skip("Test requires kernel 5.4+")
 	}
 
-	testBinary := testutils.RepoRootPath("contrib/tester-progs/uprobe-test-1")
+	testBinary := repo.RootPath("contrib/tester-progs/uprobe-test-1")
 
 	var doneWG, readyWG sync.WaitGroup
 	defer doneWG.Wait()
@@ -1105,8 +1106,8 @@ spec:
 
 func TestUprobeSelectorMatch(t *testing.T) {
 	testutils.CaptureLog(t, logger.GetLogger())
-	uprobeTest1 := testutils.RepoRootPath("contrib/tester-progs/uprobe-test-1")
-	libUprobe := testutils.RepoRootPath("contrib/tester-progs/libuprobe.so")
+	uprobeTest1 := repo.RootPath("contrib/tester-progs/uprobe-test-1")
+	libUprobe := repo.RootPath("contrib/tester-progs/libuprobe.so")
 
 	uprobeHook := `
 apiVersion: cilium.io/v1alpha1
@@ -1166,8 +1167,8 @@ spec:
 
 func TestUprobeReturnSelectorMatch(t *testing.T) {
 	testutils.CaptureLog(t, logger.GetLogger())
-	uprobeTest1 := testutils.RepoRootPath("contrib/tester-progs/uprobe-test-1")
-	libUprobe := testutils.RepoRootPath("contrib/tester-progs/libuprobe.so")
+	uprobeTest1 := repo.RootPath("contrib/tester-progs/uprobe-test-1")
+	libUprobe := repo.RootPath("contrib/tester-progs/libuprobe.so")
 
 	uprobeHook := `
 apiVersion: cilium.io/v1alpha1
@@ -1229,8 +1230,8 @@ func TestUprobeNULLStringAndReturnArg(t *testing.T) {
 	}
 
 	testutils.CaptureLog(t, logger.GetLogger())
-	uprobeTest1 := testutils.RepoRootPath("contrib/tester-progs/uprobe-test-1")
-	libUprobe := testutils.RepoRootPath("contrib/tester-progs/libuprobe.so")
+	uprobeTest1 := repo.RootPath("contrib/tester-progs/uprobe-test-1")
+	libUprobe := repo.RootPath("contrib/tester-progs/libuprobe.so")
 
 	uprobeHook := `
 apiVersion: cilium.io/v1alpha1

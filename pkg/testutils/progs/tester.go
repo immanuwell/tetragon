@@ -19,10 +19,10 @@ import (
 	"testing"
 	"unsafe"
 
-	"github.com/cilium/tetragon/pkg/testutils"
-
 	"github.com/stretchr/testify/require"
 	"golang.org/x/sys/unix"
+
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 )
 
 // Tester provides an interface to using tester from tests
@@ -119,7 +119,7 @@ func TestHelperMain() {
 //revive:disable:context-as-argument
 func StartTester(t *testing.T, ctx context.Context) *Tester {
 
-	prog := testutils.RepoRootPath("contrib/tester-progs/test-helper")
+	prog := repo.RootPath("contrib/tester-progs/test-helper")
 	cmd := exec.CommandContext(ctx, prog)
 
 	progStderr, err := cmd.StderrPipe()

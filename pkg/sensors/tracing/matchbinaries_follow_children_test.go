@@ -37,6 +37,7 @@ import (
 	"github.com/cilium/tetragon/pkg/testutils"
 	tuo "github.com/cilium/tetragon/pkg/testutils/observer"
 	"github.com/cilium/tetragon/pkg/testutils/perfring"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 	tus "github.com/cilium/tetragon/pkg/testutils/sensors"
 	"github.com/cilium/tetragon/pkg/tracingpolicy"
 )
@@ -98,7 +99,7 @@ func testMatchBinariesFollowChildren(t *testing.T, op string, result, resultMyPi
 		require.Equal(t, err, syscall.Errno(0), "getcpuexec")
 	}
 
-	getcpuBin := testutils.RepoRootPath("contrib/tester-progs/getcpu")
+	getcpuBin := repo.RootPath("contrib/tester-progs/getcpu")
 	ops := func() {
 		cmd := exec.Command(tmpShPath, "-c", getcpuBin)
 		if err := cmd.Run(); err != nil {
@@ -236,7 +237,7 @@ func TestMatchBinariesFollowChildrenUpdate(t *testing.T) {
 	tus.LoadSensor(t, testsensor.GetTestSensor())
 	sm := tuo.GetTestSensorManager(t)
 
-	forks := testutils.RepoRootPath("contrib/tester-progs/forks")
+	forks := repo.RootPath("contrib/tester-progs/forks")
 
 	tp := tracingpolicy.GenericTracingPolicy{
 		Metadata: v1.ObjectMeta{
@@ -354,7 +355,7 @@ func TestMatchBinariesFollowChildrenBeforePolicy(t *testing.T) {
 	tus.LoadSensor(t, testsensor.GetTestSensor())
 	sm := tuo.GetTestSensorManager(t)
 
-	fc_1 := testutils.RepoRootPath("contrib/tester-progs/follow_children_1")
+	fc_1 := repo.RootPath("contrib/tester-progs/follow_children_1")
 
 	tp := tracingpolicy.GenericTracingPolicy{
 		Metadata: v1.ObjectMeta{

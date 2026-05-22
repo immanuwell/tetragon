@@ -26,6 +26,7 @@ import (
 	sm "github.com/cilium/tetragon/pkg/matchers/stringmatcher"
 	"github.com/cilium/tetragon/pkg/observer/observertesthelper"
 	"github.com/cilium/tetragon/pkg/testutils"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 	tus "github.com/cilium/tetragon/pkg/testutils/sensors"
 
 	_ "github.com/cilium/tetragon/pkg/sensors/exec"
@@ -42,7 +43,7 @@ func TestCopyFd(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), tus.Conf().CmdWaitTime)
 	defer cancel()
 
-	testBin := testutils.RepoRootPath("contrib/tester-progs/dup-tester")
+	testBin := repo.RootPath("contrib/tester-progs/dup-tester")
 	testCmd := exec.CommandContext(ctx, testBin)
 	testPipes, err := testutils.NewCmdBufferedPipes(testCmd)
 	if err != nil {

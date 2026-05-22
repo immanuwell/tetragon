@@ -27,6 +27,7 @@ import (
 	"github.com/cilium/tetragon/pkg/observer/observertesthelper"
 	"github.com/cilium/tetragon/pkg/testutils"
 	"github.com/cilium/tetragon/pkg/testutils/policytest"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 	tus "github.com/cilium/tetragon/pkg/testutils/sensors"
 )
 
@@ -35,7 +36,7 @@ func TestUprobeOverrideAction(t *testing.T) {
 		t.Skip("skipping regs override action test, regs override is not supported in kernel")
 	}
 
-	testBinary := testutils.RepoRootPath("contrib/tester-progs/regs-override")
+	testBinary := repo.RootPath("contrib/tester-progs/regs-override")
 
 	// Put uprobe at the beginning of test_1 function and make sure
 	// uprobe overrides test_1 return value (with 123).
@@ -90,7 +91,7 @@ func TestUprobeOverrideRegsAction(t *testing.T) {
 		t.Skip("skipping regs override action test, regs override is not supported in kernel")
 	}
 
-	testBinary := testutils.RepoRootPath("contrib/tester-progs/regs-override")
+	testBinary := repo.RootPath("contrib/tester-progs/regs-override")
 
 	var symbol string
 
@@ -189,8 +190,8 @@ func TestUprobeResolve(t *testing.T) {
 		t.Skip("need bpf_probe_write_user() for this test")
 	}
 
-	uprobe := testutils.RepoRootPath("contrib/tester-progs/uprobe-resolve")
-	uprobeBtf := testutils.RepoRootPath("contrib/tester-progs/uprobe-resolve.btf")
+	uprobe := repo.RootPath("contrib/tester-progs/uprobe-resolve")
+	uprobeBtf := repo.RootPath("contrib/tester-progs/uprobe-resolve.btf")
 
 	tt := []struct {
 		specTy    string
@@ -316,8 +317,8 @@ func testUprobeResolveCEL(t *testing.T, expression string, commandargs []string,
 		t.Skip("Need CEL BPF support for this test.")
 	}
 
-	uprobe := testutils.RepoRootPath("contrib/tester-progs/uprobe-resolve")
-	uprobeBtf := testutils.RepoRootPath("contrib/tester-progs/uprobe-resolve.btf")
+	uprobe := repo.RootPath("contrib/tester-progs/uprobe-resolve")
+	uprobeBtf := repo.RootPath("contrib/tester-progs/uprobe-resolve.btf")
 
 	uprobeHook := `
 apiVersion: cilium.io/v1alpha1
@@ -432,8 +433,8 @@ func TestUprobeResolvePageFault(t *testing.T) {
 		t.Skip("this test requires bpf_copy_from_user_str kfunc support")
 	}
 
-	uprobe := testutils.RepoRootPath("contrib/tester-progs/uprobe-resolve")
-	uprobeBtf := testutils.RepoRootPath("contrib/tester-progs/uprobe-resolve.btf")
+	uprobe := repo.RootPath("contrib/tester-progs/uprobe-resolve")
+	uprobeBtf := repo.RootPath("contrib/tester-progs/uprobe-resolve.btf")
 
 	tt := []struct {
 		specTy    string
@@ -507,7 +508,7 @@ func testUprobeOverrideRegsActionSize(t *testing.T, ass, num string) {
 		t.Skip("skipping regs override action test, regs override is not supported in kernel")
 	}
 
-	testBinary := testutils.RepoRootPath("contrib/tester-progs/regs-override")
+	testBinary := repo.RootPath("contrib/tester-progs/regs-override")
 
 	var symbol string
 
@@ -617,7 +618,7 @@ func TestUprobeOverrideRegsAction_1byte(t *testing.T) {
 }
 
 func TestUprobePtRegsData(t *testing.T) {
-	testBinary := testutils.RepoRootPath("contrib/tester-progs/regs-override")
+	testBinary := repo.RootPath("contrib/tester-progs/regs-override")
 
 	pathHook := `
 apiVersion: cilium.io/v1alpha1
@@ -708,7 +709,7 @@ spec:
 }
 
 func testUprobePtRegsMatch(t *testing.T, value int, expectFail bool) {
-	testBinary := testutils.RepoRootPath("contrib/tester-progs/regs-override")
+	testBinary := repo.RootPath("contrib/tester-progs/regs-override")
 
 	pathHook := `
 apiVersion: cilium.io/v1alpha1
@@ -829,7 +830,7 @@ func testUprobePtRegsPreload(t *testing.T, multi bool) {
 		t.Skip("skipping, x86_64 only test")
 	}
 
-	testBinary := testutils.RepoRootPath("contrib/tester-progs/regs-override")
+	testBinary := repo.RootPath("contrib/tester-progs/regs-override")
 
 	disableUprobeMulti := ""
 
@@ -930,7 +931,7 @@ func testUprobePtRegsPreloadDouble(t *testing.T, multi bool) {
 		t.Skip("skipping, x86_64 only test")
 	}
 
-	testBinary := testutils.RepoRootPath("contrib/tester-progs/regs-override")
+	testBinary := repo.RootPath("contrib/tester-progs/regs-override")
 
 	disableUprobeMulti := ""
 
@@ -1047,7 +1048,7 @@ func testUprobePtRegsPreloadSubstring(t *testing.T, str string, ignoreCase bool,
 		t.Skip("skipping, can't use uprobe multi, no kernel support")
 	}
 
-	testBinary := testutils.RepoRootPath("contrib/tester-progs/regs-override")
+	testBinary := repo.RootPath("contrib/tester-progs/regs-override")
 
 	op := "SubString"
 	if ignoreCase {
@@ -1230,7 +1231,7 @@ func testUprobePtRegsPreloadSubstringOverride(t *testing.T, single bool) {
 		t.Skip("skipping, no bpf_strnstr kfunc in kernel")
 	}
 
-	testBinary := testutils.RepoRootPath("contrib/tester-progs/regs-override")
+	testBinary := repo.RootPath("contrib/tester-progs/regs-override")
 
 	// Put uprobe in test_3 function at:
 	//
@@ -1332,8 +1333,8 @@ func TestUprobeResolveNull(t *testing.T) {
 		t.Skip("Need 5.3 or newer kernel for uprobe ref_ctr_off support for this test.")
 	}
 
-	uprobe := testutils.RepoRootPath("contrib/tester-progs/uprobe-null")
-	uprobeBtf := testutils.RepoRootPath("contrib/tester-progs/uprobe-null.btf")
+	uprobe := repo.RootPath("contrib/tester-progs/uprobe-null")
+	uprobeBtf := repo.RootPath("contrib/tester-progs/uprobe-null.btf")
 
 	tt := []struct {
 		arg    string
@@ -1413,8 +1414,8 @@ func UprobeResolveNullMatch(t *testing.T, expectCheckerFailure bool, arg string)
 		t.Skip("Need 5.3 or newer kernel for uprobe ref_ctr_off support for this test.")
 	}
 
-	uprobe := testutils.RepoRootPath("contrib/tester-progs/uprobe-null")
-	uprobeBtf := testutils.RepoRootPath("contrib/tester-progs/uprobe-null.btf")
+	uprobe := repo.RootPath("contrib/tester-progs/uprobe-null")
+	uprobeBtf := repo.RootPath("contrib/tester-progs/uprobe-null.btf")
 
 	uprobeHook := `
 apiVersion: cilium.io/v1alpha1

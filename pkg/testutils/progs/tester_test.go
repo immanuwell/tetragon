@@ -12,7 +12,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/cilium/tetragon/pkg/testutils"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 )
 
 func TestPing(t *testing.T) {
@@ -39,7 +39,7 @@ func TestExec(t *testing.T) {
 func TestSigkill(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	raisesigkillProg := testutils.RepoRootPath("contrib/tester-progs/raisesigkill")
+	raisesigkillProg := repo.RootPath("contrib/tester-progs/raisesigkill")
 	pt := StartTester(t, ctx)
 	out, err := pt.ExecMayFail(raisesigkillProg)
 	require.NoError(t, err)

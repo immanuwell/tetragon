@@ -23,10 +23,11 @@ import (
 	"github.com/cilium/tetragon/pkg/jsonchecker"
 	sm "github.com/cilium/tetragon/pkg/matchers/stringmatcher"
 	"github.com/cilium/tetragon/pkg/testutils"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 )
 
 func testExit(t *testing.T) {
-	testNop := testutils.RepoRootPath("contrib/tester-progs/nop")
+	testNop := repo.RootPath("contrib/tester-progs/nop")
 
 	procChecker := ec.NewProcessChecker().
 		WithBinary(sm.Full(testNop))
@@ -45,7 +46,7 @@ func testExit(t *testing.T) {
 }
 
 func testExitLeader(t *testing.T) {
-	testExitLeader := testutils.RepoRootPath("contrib/tester-progs/exit-leader")
+	testExitLeader := repo.RootPath("contrib/tester-progs/exit-leader")
 
 	var startTime, exitTime time.Time
 
@@ -108,7 +109,7 @@ func testExitLeader(t *testing.T) {
 //
 // In our test we check that the parent of the /bin/echo command is the exit-tester program.
 func testExitZombie(t *testing.T) {
-	testBin := testutils.RepoRootPath("contrib/tester-progs/exit-tester")
+	testBin := repo.RootPath("contrib/tester-progs/exit-tester")
 	testCmd := exec.Command(testBin)
 	testPipes, err := testutils.NewCmdBufferedPipes(testCmd)
 	if err != nil {
@@ -146,7 +147,7 @@ func testExitZombie(t *testing.T) {
 //
 // In our test we check whether the observed exit code equals the real exit code.
 func testExitCode(t *testing.T) {
-	testExitCodeBinary := testutils.RepoRootPath("contrib/tester-progs/exit-code")
+	testExitCodeBinary := repo.RootPath("contrib/tester-progs/exit-code")
 
 	// Test different exit codes
 	testCases := []int8{
@@ -201,7 +202,7 @@ func testExitCode(t *testing.T) {
 // In our test we check whether the observed exit signal equals the real exit signal.
 func testExitSignal(t *testing.T) {
 	checker := ec.NewUnorderedEventChecker()
-	testExitSignalBinary := testutils.RepoRootPath("contrib/tester-progs/pause")
+	testExitSignalBinary := repo.RootPath("contrib/tester-progs/pause")
 
 	for sig := 1; sig <= 15; sig++ {
 		signal := syscall.Signal(sig)

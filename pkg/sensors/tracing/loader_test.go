@@ -22,7 +22,7 @@ import (
 	"github.com/cilium/tetragon/pkg/matchers/bytesmatcher"
 	sm "github.com/cilium/tetragon/pkg/matchers/stringmatcher"
 	"github.com/cilium/tetragon/pkg/observer/observertesthelper"
-	"github.com/cilium/tetragon/pkg/testutils"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 	tus "github.com/cilium/tetragon/pkg/testutils/sensors"
 )
 
@@ -111,7 +111,7 @@ spec:
 
 	createCrdFile(t, loaderHook)
 
-	testNop := testutils.RepoRootPath("contrib/tester-progs/nop")
+	testNop := repo.RootPath("contrib/tester-progs/nop")
 
 	id, err := parseBuildId(testNop)
 	if err != nil {

@@ -28,6 +28,7 @@ import (
 	"github.com/cilium/tetragon/pkg/testutils/perfring"
 	pft "github.com/cilium/tetragon/pkg/testutils/policyfilter/tester"
 	tups "github.com/cilium/tetragon/pkg/testutils/policystats"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 	tus "github.com/cilium/tetragon/pkg/testutils/sensors"
 	"github.com/cilium/tetragon/pkg/tracingpolicy"
 )
@@ -74,7 +75,7 @@ func TestModeSigKill(t *testing.T) {
 
 	pft.AddPolicy(t, ctx, tp)
 
-	getcpuProg := testutils.RepoRootPath("contrib/tester-progs/getcpu")
+	getcpuProg := repo.RootPath("contrib/tester-progs/getcpu")
 	var progOut string
 	var progErr error
 	ops := func() {

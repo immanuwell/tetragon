@@ -38,6 +38,7 @@ import (
 	testsensor "github.com/cilium/tetragon/pkg/sensors/test"
 	"github.com/cilium/tetragon/pkg/testutils"
 	"github.com/cilium/tetragon/pkg/testutils/perfring"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 	tus "github.com/cilium/tetragon/pkg/testutils/sensors"
 )
 
@@ -936,7 +937,7 @@ func testCgroupv2K8sHierarchy(ctx context.Context, t *testing.T, mode cgroups.Cg
 	// Exec the cgroup-migrate script that will create cgroups,
 	// migrate processes, then performs an execve to gather
 	// exec events.
-	testCgroupMigrate := testutils.RepoRootPath("contrib/tester-progs/cgroup-migrate.bash")
+	testCgroupMigrate := repo.RootPath("contrib/tester-progs/cgroup-migrate.bash")
 	triggerCgroupExec := func() {
 		path := cgroupRoot
 		for i, dir := range kubeCgroupHierarchy {
@@ -1166,7 +1167,7 @@ func testCgroupv1K8sHierarchyInHybrid(t *testing.T, withExec bool, selectedContr
 	// Exec the cgroup-migrate script that will create cgroup of the usedController,
 	// migrate processes to this usedController then performs an execve to gather
 	// exec events.
-	testCgroupMigrate := testutils.RepoRootPath("contrib/tester-progs/cgroup-migrate.bash")
+	testCgroupMigrate := repo.RootPath("contrib/tester-progs/cgroup-migrate.bash")
 	triggerCgroupExec := func() {
 		path := filepath.Join(cgroupRoot, usedController)
 		for i, dir := range kubeCgroupHierarchiesMap[usedController] {

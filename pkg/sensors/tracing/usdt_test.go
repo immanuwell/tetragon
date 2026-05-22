@@ -27,6 +27,7 @@ import (
 	"github.com/cilium/tetragon/pkg/sensors"
 	"github.com/cilium/tetragon/pkg/testutils"
 	"github.com/cilium/tetragon/pkg/testutils/policytest"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 	tus "github.com/cilium/tetragon/pkg/testutils/sensors"
 )
 
@@ -119,7 +120,7 @@ func TestUsdtLoadSensor(t *testing.T) {
 		}
 	}
 
-	usdt := testutils.RepoRootPath("contrib/tester-progs/usdt")
+	usdt := repo.RootPath("contrib/tester-progs/usdt")
 
 	nopHook := `
 apiVersion: cilium.io/v1alpha1
@@ -158,7 +159,7 @@ func TestUsdtGeneric(t *testing.T) {
 		t.Skip("Need 5.3 or newer kernel for usdt and uprobe ref_ctr_off support for this test.")
 	}
 
-	usdt := testutils.RepoRootPath("contrib/tester-progs/usdt")
+	usdt := repo.RootPath("contrib/tester-progs/usdt")
 	usdtHook := `
 apiVersion: cilium.io/v1alpha1
 kind: TracingPolicy
@@ -207,7 +208,7 @@ func TestUsdtArgs(t *testing.T) {
 		t.Skip("Need 5.3 or newer kernel for usdt and uprobe ref_ctr_off support for this test.")
 	}
 
-	usdt := testutils.RepoRootPath("contrib/tester-progs/usdt")
+	usdt := repo.RootPath("contrib/tester-progs/usdt")
 	usdtHook := `
 apiVersion: cilium.io/v1alpha1
 kind: TracingPolicy
@@ -389,7 +390,7 @@ func TestUsdtStringArg(t *testing.T) {
 		t.Skip("this test requires bpf_copy_from_user_str kfunc support")
 	}
 
-	usdt := testutils.RepoRootPath("contrib/tester-progs/usdt-args")
+	usdt := repo.RootPath("contrib/tester-progs/usdt-args")
 	argType := "string"
 	argValue := "hello world!"
 	usdtHook := `
@@ -456,7 +457,7 @@ func TestUsdtGenericActionSigkill(t *testing.T) {
 		t.Skip("Need 5.3 or newer kernel for usdt and uprobe ref_ctr_off support for this test.")
 	}
 
-	usdt := testutils.RepoRootPath("contrib/tester-progs/usdt")
+	usdt := repo.RootPath("contrib/tester-progs/usdt")
 	usdtHook := `
 apiVersion: cilium.io/v1alpha1
 kind: TracingPolicy
@@ -547,8 +548,8 @@ func TestUsdtResolve(t *testing.T) {
 		t.Skip("need bpf_probe_write_user() for this test")
 	}
 
-	usdt := testutils.RepoRootPath("contrib/tester-progs/usdt-resolve")
-	usdtBtf := testutils.RepoRootPath("contrib/tester-progs/usdt-resolve.btf")
+	usdt := repo.RootPath("contrib/tester-progs/usdt-resolve")
+	usdtBtf := repo.RootPath("contrib/tester-progs/usdt-resolve.btf")
 
 	tt := []struct {
 		specTy    string

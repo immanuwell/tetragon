@@ -19,11 +19,12 @@ import (
 	"github.com/cilium/tetragon/pkg/jsonchecker"
 	sm "github.com/cilium/tetragon/pkg/matchers/stringmatcher"
 	"github.com/cilium/tetragon/pkg/testutils"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 )
 
 // TestFork checks that tetragon properly handles processes that fork() but do not exec()
 func testFork(t *testing.T) {
-	testBin := testutils.RepoRootPath("contrib/tester-progs/fork-tester")
+	testBin := repo.RootPath("contrib/tester-progs/fork-tester")
 	testCmd := exec.Command(testBin)
 	testPipes, err := testutils.NewCmdBufferedPipes(testCmd)
 	if err != nil {

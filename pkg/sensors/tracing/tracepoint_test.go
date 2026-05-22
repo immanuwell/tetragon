@@ -42,6 +42,7 @@ import (
 	"github.com/cilium/tetragon/pkg/testutils"
 	tuo "github.com/cilium/tetragon/pkg/testutils/observer"
 	"github.com/cilium/tetragon/pkg/testutils/perfring"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 	tus "github.com/cilium/tetragon/pkg/testutils/sensors"
 
 	_ "github.com/cilium/tetragon/pkg/sensors/exec"
@@ -551,7 +552,7 @@ func TestTracepointCloneThreads(t *testing.T) {
 	}
 
 	testBinPath := "contrib/tester-progs/threads-tester"
-	testBin := testutils.RepoRootPath(testBinPath)
+	testBin := repo.RootPath(testBinPath)
 	testCmd := exec.CommandContext(ctx, testBin, "--sensor", "tracepoint")
 	testPipes, err := testutils.NewCmdBufferedPipes(testCmd)
 	if err != nil {
@@ -675,7 +676,7 @@ spec:
 	readyWG.Wait()
 
 	testBinPath := "contrib/tester-progs/threads-tester"
-	testBin := testutils.RepoRootPath(testBinPath)
+	testBin := repo.RootPath(testBinPath)
 	testCmd := exec.CommandContext(ctx, testBin, "--sensor", "tracepoint")
 	testPipes, err := testutils.NewCmdBufferedPipes(testCmd)
 	if err != nil {
@@ -991,7 +992,7 @@ spec:
 
 	createCrdFile(t, hook)
 
-	testNop := testutils.RepoRootPath("contrib/tester-progs/nop")
+	testNop := repo.RootPath("contrib/tester-progs/nop")
 
 	obs, err := observertesthelper.GetDefaultObserverWithFile(t, ctx, testConfigFile, tus.Conf().TetragonLib)
 	if err != nil {

@@ -24,7 +24,7 @@ import (
 	sm "github.com/cilium/tetragon/pkg/matchers/stringmatcher"
 	"github.com/cilium/tetragon/pkg/observer/observertesthelper"
 	"github.com/cilium/tetragon/pkg/reader/caps"
-	"github.com/cilium/tetragon/pkg/testutils"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 	tus "github.com/cilium/tetragon/pkg/testutils/sensors"
 
 	_ "github.com/cilium/tetragon/pkg/sensors/exec"
@@ -379,7 +379,7 @@ func TestKprobeMatchCurrentCredRealUid(t *testing.T) {
 
 	// The drop-privileges is a helper binary that drops privileges so we do not
 	// drop it inside this test which will break the test framework.
-	testDrop := testutils.RepoRootPath("contrib/tester-progs/drop-privileges")
+	testDrop := repo.RootPath("contrib/tester-progs/drop-privileges")
 	testEcho, err := exec.LookPath("echo")
 	if err != nil {
 		t.Skipf("Skipping test could not find 'echo' binary: %v", err)
@@ -484,7 +484,7 @@ func TestKprobeMatchCurrentCredRealUidNotEqual(t *testing.T) {
 
 	// The drop-privileges is a helper binary that drops privileges so we do not
 	// drop it inside this test which will break the test framework.
-	testDrop := testutils.RepoRootPath("contrib/tester-progs/drop-privileges")
+	testDrop := repo.RootPath("contrib/tester-progs/drop-privileges")
 	testEcho, err := exec.LookPath("echo")
 	if err != nil {
 		t.Skipf("Skipping test could not find 'echo' binary: %v", err)
@@ -590,7 +590,7 @@ func TestKprobeMatchCurrentCredRealEffectiveUid(t *testing.T) {
 
 	// The drop-privileges is a helper binary that drops privileges so we do not
 	// drop it inside this test which will break the test framework.
-	testDrop := testutils.RepoRootPath("contrib/tester-progs/drop-privileges")
+	testDrop := repo.RootPath("contrib/tester-progs/drop-privileges")
 	testEcho, err := exec.LookPath("echo")
 	if err != nil {
 		t.Skipf("Skipping test could not find 'echo' binary: %v", err)
@@ -702,7 +702,7 @@ func TestKprobeMatchCurrentCredRealEffectiveUidNotEqual(t *testing.T) {
 
 	// The drop-privileges is a helper binary that drops privileges so we do not
 	// drop it inside this test which will break the test framework.
-	testDrop := testutils.RepoRootPath("contrib/tester-progs/drop-privileges")
+	testDrop := repo.RootPath("contrib/tester-progs/drop-privileges")
 	testEcho, err := exec.LookPath("echo")
 	if err != nil {
 		t.Skipf("Skipping test could not find 'echo' binary: %v", err)

@@ -32,7 +32,7 @@ import (
 	"github.com/cilium/tetragon/pkg/policyfilter"
 	"github.com/cilium/tetragon/pkg/sensors"
 	"github.com/cilium/tetragon/pkg/syscallinfo"
-	"github.com/cilium/tetragon/pkg/testutils"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 	tus "github.com/cilium/tetragon/pkg/testutils/sensors"
 	"github.com/cilium/tetragon/pkg/tracingpolicy"
 )
@@ -90,7 +90,7 @@ func testEnforcer(t *testing.T, configHook string,
 func TestEnforcerOverride(t *testing.T) {
 	testEnforcerCheckSkip(t)
 
-	test := testutils.RepoRootPath("contrib/tester-progs/getcpu")
+	test := repo.RootPath("contrib/tester-progs/getcpu")
 	builder := func() *EnforcerSpecBuilder {
 		return NewEnforcerSpecBuilder("enforcer-override").
 			WithSyscallList("sys_getcpu").
@@ -144,7 +144,7 @@ func TestEnforcerOverride(t *testing.T) {
 func TestEnforcerOverrideManySyscalls(t *testing.T) {
 	testEnforcerCheckSkip(t)
 
-	test := testutils.RepoRootPath("contrib/tester-progs/getcpu")
+	test := repo.RootPath("contrib/tester-progs/getcpu")
 	builder := func() *EnforcerSpecBuilder {
 		return NewEnforcerSpecBuilder("enforcer-override").
 			WithSyscallList("sys_getcpu", "sys_sethostname").
@@ -204,7 +204,7 @@ func mkSysIDChecker(t *testing.T, id uint64) *eventchecker.SyscallIdChecker {
 func TestEnforcerSignal(t *testing.T) {
 	testEnforcerCheckSkip(t)
 
-	test := testutils.RepoRootPath("contrib/tester-progs/enforcer-tester")
+	test := repo.RootPath("contrib/tester-progs/enforcer-tester")
 
 	tpChecker := eventchecker.NewProcessTracepointChecker("").
 		WithArgs(eventchecker.NewKprobeArgumentListMatcher().
@@ -276,7 +276,7 @@ func testSecurity(t *testing.T, tracingPolicy, tempFile string) {
 	observertesthelper.LoopEvents(ctx, t, &doneWG, &readyWG, obs)
 	readyWG.Wait()
 
-	testBin := testutils.RepoRootPath("contrib/tester-progs/direct-write-tester")
+	testBin := repo.RootPath("contrib/tester-progs/direct-write-tester")
 
 	cmd := exec.Command(testBin, tempFile)
 	err = cmd.Run()
@@ -531,7 +531,7 @@ func TestEnforcerMulti(t *testing.T) {
 		t.Skip("Older kernels do not support matchArgs for more than one arguments")
 	}
 
-	testBin := testutils.RepoRootPath("contrib/tester-progs/enforcer-tester")
+	testBin := repo.RootPath("contrib/tester-progs/enforcer-tester")
 
 	policyYAML1 := `
 apiVersion: cilium.io/v1alpha1
@@ -907,7 +907,7 @@ func testEnforcerPersistentUnload(t *testing.T, builder func() *EnforcerSpecBuil
 }
 
 func TestEnforcerPersistentOverride(t *testing.T) {
-	test := testutils.RepoRootPath("contrib/tester-progs/enforcer-tester")
+	test := repo.RootPath("contrib/tester-progs/enforcer-tester")
 
 	builder := func() *EnforcerSpecBuilder {
 		return NewEnforcerSpecBuilder("enforcer-signal").
@@ -929,7 +929,7 @@ func TestEnforcerPersistentOverride(t *testing.T) {
 
 func TestEnforcerPersistentKill(t *testing.T) {
 
-	test := testutils.RepoRootPath("contrib/tester-progs/enforcer-tester")
+	test := repo.RootPath("contrib/tester-progs/enforcer-tester")
 
 	builder := func() *EnforcerSpecBuilder {
 		return NewEnforcerSpecBuilder("enforcer-signal").

@@ -21,6 +21,7 @@ import (
 	"github.com/cilium/tetragon/pkg/reader/caps"
 	"github.com/cilium/tetragon/pkg/reader/namespace"
 	"github.com/cilium/tetragon/pkg/testutils"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 	tus "github.com/cilium/tetragon/pkg/testutils/sensors"
 )
 
@@ -57,7 +58,7 @@ spec:
 	createCrdFile(t, configHook)
 
 	testBinPath := "contrib/tester-progs/threads-tester"
-	testBin := testutils.RepoRootPath(testBinPath)
+	testBin := repo.RootPath(testBinPath)
 	testCmd := exec.CommandContext(ctx, testBin, "--sensor", "kprobe")
 	testPipes, err := testutils.NewCmdBufferedPipes(testCmd)
 	if err != nil {

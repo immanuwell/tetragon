@@ -10,14 +10,14 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/cilium/tetragon/pkg/testutils"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 )
 
 func TestUprobeValidationMultiplePreloadArguments(t *testing.T) {
 
 	// Using multiple preload arguments
 
-	uprobe := testutils.RepoRootPath("contrib/tester-progs/usdt-override")
+	uprobe := repo.RootPath("contrib/tester-progs/usdt-override")
 	crd := `
 apiVersion: cilium.io/v1alpha1
 kind: TracingPolicy

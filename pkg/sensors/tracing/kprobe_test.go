@@ -65,6 +65,7 @@ import (
 	tuo "github.com/cilium/tetragon/pkg/testutils/observer"
 	"github.com/cilium/tetragon/pkg/testutils/perfring"
 	"github.com/cilium/tetragon/pkg/testutils/policytest"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 	tus "github.com/cilium/tetragon/pkg/testutils/sensors"
 	"github.com/cilium/tetragon/pkg/tracingpolicy"
 
@@ -6020,7 +6021,7 @@ func testKprobeUserStackTrace(t *testing.T, fentry bool) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), tus.Conf().CmdWaitTime)
 	defer cancel()
-	testUserStacktrace := testutils.RepoRootPath("contrib/tester-progs/user-stacktrace")
+	testUserStacktrace := repo.RootPath("contrib/tester-progs/user-stacktrace")
 	tracingPolicy := `apiVersion: cilium.io/v1alpha1
 kind: TracingPolicy
 metadata:
@@ -6482,7 +6483,7 @@ spec:
 	observertesthelper.LoopEvents(ctx, t, &doneWG, &readyWG, obs)
 	readyWG.Wait()
 
-	testSetCaps := testutils.RepoRootPath("contrib/tester-progs/change-capabilities")
+	testSetCaps := repo.RootPath("contrib/tester-progs/change-capabilities")
 
 	t.Logf("Test %s Matching cap_permitted:%s - cap_inheritable:%s - cap_effective:%s",
 		t.Name(), caps.GetCapabilitiesHex(fullSet), fmt.Sprintf("%016x", 0), caps.GetCapabilitiesHex(firstChange))
@@ -6553,7 +6554,7 @@ func TestMissedProgStatsKprobeMulti(t *testing.T) {
 		t.Skip("Test requires kprobe multi and kernel version 6.7")
 	}
 
-	testNop := testutils.RepoRootPath("contrib/tester-progs/nop")
+	testNop := repo.RootPath("contrib/tester-progs/nop")
 
 	tracingPolicy := `
 apiVersion: cilium.io/v1alpha1
@@ -7682,7 +7683,7 @@ func testCapabilitiesGained(t *testing.T, fentry bool) {
 	ctx, cancel := context.WithTimeout(context.Background(), tus.Conf().CmdWaitTime)
 	defer cancel()
 
-	testCapabilitiesGained := testutils.RepoRootPath("contrib/tester-progs/capabilities-gained")
+	testCapabilitiesGained := repo.RootPath("contrib/tester-progs/capabilities-gained")
 
 	if !config.EnableLargeProgs() {
 		t.Skip("CapabilitiesGained is not supported in kernels without large program support")

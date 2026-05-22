@@ -13,11 +13,12 @@ import (
 
 	"github.com/cilium/tetragon/api/v1/tetragon"
 	"github.com/cilium/tetragon/pkg/testutils"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 )
 
 func Test_GetEvents_Namespaces(t *testing.T) {
 	t.Run("FilterNothing", func(t *testing.T) {
-		testutils.MockPipedFile(t, testutils.RepoRootPath("testdata/events.json"))
+		testutils.MockPipedFile(t, repo.RootPath("testdata/events.json"))
 		cmd := New()
 		cmd.SetArgs([]string{"--namespaces", "default"})
 		output := testutils.RedirectStdoutExecuteCmd(t, cmd)
@@ -25,7 +26,7 @@ func Test_GetEvents_Namespaces(t *testing.T) {
 	})
 
 	t.Run("FilterAll", func(t *testing.T) {
-		testutils.MockPipedFile(t, testutils.RepoRootPath("testdata/events.json"))
+		testutils.MockPipedFile(t, repo.RootPath("testdata/events.json"))
 		cmd := New()
 		cmd.SetArgs([]string{"--namespaces", "doesnotexist"})
 		output := testutils.RedirectStdoutExecuteCmd(t, cmd)
@@ -35,7 +36,7 @@ func Test_GetEvents_Namespaces(t *testing.T) {
 
 func Test_GetEvents_EventTypes(t *testing.T) {
 	t.Run("FilterProcessExec", func(t *testing.T) {
-		testutils.MockPipedFile(t, testutils.RepoRootPath("testdata/events.json"))
+		testutils.MockPipedFile(t, repo.RootPath("testdata/events.json"))
 		cmd := New()
 		cmd.SetArgs([]string{"--event-types", "PROCESS_EXEC"})
 		output := testutils.RedirectStdoutExecuteCmd(t, cmd)
@@ -60,7 +61,7 @@ func Test_GetEvents_EventTypes(t *testing.T) {
 
 func Test_GetEvents_Pods(t *testing.T) {
 	t.Run("FilterTie", func(t *testing.T) {
-		testutils.MockPipedFile(t, testutils.RepoRootPath("testdata/events.json"))
+		testutils.MockPipedFile(t, repo.RootPath("testdata/events.json"))
 		cmd := New()
 		cmd.SetArgs([]string{"--pods", "tiefighter"})
 		output := testutils.RedirectStdoutExecuteCmd(t, cmd)
@@ -68,7 +69,7 @@ func Test_GetEvents_Pods(t *testing.T) {
 	})
 
 	t.Run("FilterDeathstar", func(t *testing.T) {
-		testutils.MockPipedFile(t, testutils.RepoRootPath("testdata/events.json"))
+		testutils.MockPipedFile(t, repo.RootPath("testdata/events.json"))
 		cmd := New()
 		cmd.SetArgs([]string{"--pods", "deathstar"})
 		output := testutils.RedirectStdoutExecuteCmd(t, cmd)
@@ -78,7 +79,7 @@ func Test_GetEvents_Pods(t *testing.T) {
 
 func Test_GetEvents_Containers(t *testing.T) {
 	t.Run("FilterTie", func(t *testing.T) {
-		testutils.MockPipedFile(t, testutils.RepoRootPath("testdata/events.json"))
+		testutils.MockPipedFile(t, repo.RootPath("testdata/events.json"))
 		cmd := New()
 		cmd.SetArgs([]string{"--containers", "spaceship"})
 		output := testutils.RedirectStdoutExecuteCmd(t, cmd)
@@ -86,7 +87,7 @@ func Test_GetEvents_Containers(t *testing.T) {
 	})
 
 	t.Run("FilterDeath*", func(t *testing.T) {
-		testutils.MockPipedFile(t, testutils.RepoRootPath("testdata/events.json"))
+		testutils.MockPipedFile(t, repo.RootPath("testdata/events.json"))
 		cmd := New()
 		cmd.SetArgs([]string{"--containers", "death*"})
 		output := testutils.RedirectStdoutExecuteCmd(t, cmd)
@@ -96,7 +97,7 @@ func Test_GetEvents_Containers(t *testing.T) {
 
 func Test_GetEvents_Processes(t *testing.T) {
 	t.Run("FilterNetserver", func(t *testing.T) {
-		testutils.MockPipedFile(t, testutils.RepoRootPath("testdata/events.json"))
+		testutils.MockPipedFile(t, repo.RootPath("testdata/events.json"))
 		cmd := New()
 		cmd.SetArgs([]string{"--processes", "netserver"})
 		output := testutils.RedirectStdoutExecuteCmd(t, cmd)
@@ -104,7 +105,7 @@ func Test_GetEvents_Processes(t *testing.T) {
 	})
 
 	t.Run("FilterDocker", func(t *testing.T) {
-		testutils.MockPipedFile(t, testutils.RepoRootPath("testdata/events.json"))
+		testutils.MockPipedFile(t, repo.RootPath("testdata/events.json"))
 		cmd := New()
 		cmd.SetArgs([]string{"--processes", "docker"})
 		output := testutils.RedirectStdoutExecuteCmd(t, cmd)
@@ -114,7 +115,7 @@ func Test_GetEvents_Processes(t *testing.T) {
 
 func Test_GetEvents_FilterFields(t *testing.T) {
 	t.Run("ExcludeParent", func(t *testing.T) {
-		testutils.MockPipedFile(t, testutils.RepoRootPath("testdata/events.json"))
+		testutils.MockPipedFile(t, repo.RootPath("testdata/events.json"))
 		cmd := New()
 		cmd.SetArgs([]string{"-F", "parent"})
 		output := testutils.RedirectStdoutExecuteCmd(t, cmd)
@@ -133,7 +134,7 @@ func Test_GetEvents_FilterFields(t *testing.T) {
 	})
 
 	t.Run("IncludeParent", func(t *testing.T) {
-		testutils.MockPipedFile(t, testutils.RepoRootPath("testdata/events.json"))
+		testutils.MockPipedFile(t, repo.RootPath("testdata/events.json"))
 		cmd := New()
 		cmd.SetArgs([]string{"-f", "parent"})
 		output := testutils.RedirectStdoutExecuteCmd(t, cmd)
@@ -152,7 +153,7 @@ func Test_GetEvents_FilterFields(t *testing.T) {
 	})
 
 	t.Run("FilterCelExpression", func(t *testing.T) {
-		testutils.MockPipedFile(t, testutils.RepoRootPath("testdata/events.json"))
+		testutils.MockPipedFile(t, repo.RootPath("testdata/events.json"))
 		cmd := New()
 		cmd.SetArgs([]string{"--cel-expression", "process_exec.process.pod.pod_labels['class'] == 'deathstar'"})
 		output := testutils.RedirectStdoutExecuteCmd(t, cmd)

@@ -16,7 +16,7 @@ import (
 	sm "github.com/cilium/tetragon/pkg/matchers/stringmatcher"
 	"github.com/cilium/tetragon/pkg/syscallinfo/arm32"
 	"github.com/cilium/tetragon/pkg/syscallinfo/i386"
-	"github.com/cilium/tetragon/pkg/testutils"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 )
 
 func TestEnforcerOverride32(t *testing.T) {
@@ -38,7 +38,7 @@ func TestEnforcerOverride32(t *testing.T) {
 		t.Fatalf("Unknown arch: %s", a)
 	}
 
-	test := testutils.RepoRootPath("contrib/tester-progs/enforcer-tester-32")
+	test := repo.RootPath("contrib/tester-progs/enforcer-tester-32")
 	yaml := NewEnforcerSpecBuilder("enforcer-override").
 		WithSyscallList(syscallVal).
 		WithMatchBinaries(test).
@@ -82,7 +82,7 @@ func TestEnforcerSignal32(t *testing.T) {
 		t.Fatalf("Unknown arch: %s", a)
 	}
 
-	test := testutils.RepoRootPath("contrib/tester-progs/enforcer-tester-32")
+	test := repo.RootPath("contrib/tester-progs/enforcer-tester-32")
 	yaml := NewEnforcerSpecBuilder("enforcer-signal").
 		WithSyscallList(syscallVal).
 		WithMatchBinaries(test).
@@ -128,8 +128,8 @@ func TestEnforcerOverrideBothBits(t *testing.T) {
 		t.Fatalf("Unknown arch: %s", a)
 	}
 
-	test32 := testutils.RepoRootPath("contrib/tester-progs/enforcer-tester-32")
-	test64 := testutils.RepoRootPath("contrib/tester-progs/enforcer-tester")
+	test32 := repo.RootPath("contrib/tester-progs/enforcer-tester-32")
+	test64 := repo.RootPath("contrib/tester-progs/enforcer-tester")
 
 	yaml := NewEnforcerSpecBuilder("enforcer-override").
 		WithSyscallList(syscallVal, "sys_prctl").

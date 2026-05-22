@@ -31,7 +31,7 @@ import (
 	"github.com/cilium/tetragon/pkg/observer/observertesthelper"
 	"github.com/cilium/tetragon/pkg/option"
 	"github.com/cilium/tetragon/pkg/sensors"
-	"github.com/cilium/tetragon/pkg/testutils"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 	tus "github.com/cilium/tetragon/pkg/testutils/sensors"
 )
 
@@ -254,7 +254,7 @@ func TestLSMOpenFile(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), tus.Conf().CmdWaitTime)
 	defer cancel()
 
-	testBin := testutils.RepoRootPath("contrib/tester-progs/direct-write-tester")
+	testBin := repo.RootPath("contrib/tester-progs/direct-write-tester")
 	tempFile := directWriteTempFile(t)
 
 	configHook := `
@@ -316,7 +316,7 @@ func TestLSMOverrideAction(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), tus.Conf().CmdWaitTime)
 	defer cancel()
 
-	testBin := testutils.RepoRootPath("contrib/tester-progs/nop")
+	testBin := repo.RootPath("contrib/tester-progs/nop")
 	pidStr := strconv.Itoa(int(observertesthelper.GetMyPid()))
 
 	configHook := `
@@ -385,7 +385,7 @@ func TestLSMIMAHash(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), tus.Conf().CmdWaitTime)
 	defer cancel()
 
-	testBin := testutils.RepoRootPath("contrib/tester-progs/nop")
+	testBin := repo.RootPath("contrib/tester-progs/nop")
 	pidStr := strconv.Itoa(int(observertesthelper.GetMyPid()))
 
 	configHook := `

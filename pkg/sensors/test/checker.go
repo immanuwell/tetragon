@@ -13,7 +13,7 @@ import (
 	ec "github.com/cilium/tetragon/api/v1/tetragon/codegen/eventchecker"
 	"github.com/cilium/tetragon/pkg/config"
 	"github.com/cilium/tetragon/pkg/option"
-	"github.com/cilium/tetragon/pkg/testutils"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 )
 
 //revive:disable
@@ -48,7 +48,7 @@ type TestEventChecker struct {
 
 // TestCheckerMarkEnd executes the necessary operations to mark the end of event stream on all CPUs
 func TestCheckerMarkEnd(t *testing.T) {
-	testBin := testutils.RepoRootPath("contrib/tester-progs/trigger-test-events")
+	testBin := repo.RootPath("contrib/tester-progs/trigger-test-events")
 	testCmd := exec.Command(testBin)
 	err := testCmd.Run()
 	if err != nil {

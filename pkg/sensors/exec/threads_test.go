@@ -25,6 +25,7 @@ import (
 	testsensor "github.com/cilium/tetragon/pkg/sensors/test"
 	"github.com/cilium/tetragon/pkg/testutils"
 	"github.com/cilium/tetragon/pkg/testutils/perfring"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 	tus "github.com/cilium/tetragon/pkg/testutils/sensors"
 )
 
@@ -53,7 +54,7 @@ func TestThreadTesterParser(t *testing.T) {
 
 func testCloneThreadsTester(t *testing.T) {
 	testBinPath := "contrib/tester-progs/threads-tester"
-	testBin := testutils.RepoRootPath(testBinPath)
+	testBin := repo.RootPath(testBinPath)
 	testCmd := exec.Command(testBin)
 	testPipes, err := testutils.NewCmdBufferedPipes(testCmd)
 	if err != nil {
@@ -93,7 +94,7 @@ func TestMatchCloneThreadsIDs(t *testing.T) {
 	tus.LoadSensor(t, testsensor.GetTestSensor())
 
 	testBinPath := "contrib/tester-progs/threads-tester"
-	testBin := testutils.RepoRootPath(testBinPath)
+	testBin := repo.RootPath(testBinPath)
 
 	tti := &testutils.ThreadTesterInfo{}
 	ops := func() {
@@ -160,7 +161,7 @@ func TestMatchCloneThreadsIDs(t *testing.T) {
 }
 
 func testExecThreads(t *testing.T) {
-	testBin := testutils.RepoRootPath("contrib/tester-progs/threads-tester")
+	testBin := repo.RootPath("contrib/tester-progs/threads-tester")
 	testCmd := exec.Command(testBin)
 	testPipes, err := testutils.NewCmdBufferedPipes(testCmd)
 	if err != nil {

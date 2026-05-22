@@ -23,7 +23,7 @@ import (
 	sm "github.com/cilium/tetragon/pkg/matchers/stringmatcher"
 	"github.com/cilium/tetragon/pkg/observer/observertesthelper"
 	"github.com/cilium/tetragon/pkg/reader/caps"
-	"github.com/cilium/tetragon/pkg/testutils"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 	tus "github.com/cilium/tetragon/pkg/testutils/sensors"
 
 	_ "github.com/cilium/tetragon/pkg/sensors/exec"
@@ -41,7 +41,7 @@ func TestKprobeTraceCapabilityChecks(t *testing.T) {
 	pidStr := strconv.Itoa(int(observertesthelper.GetMyPid()))
 	t.Logf("tester pid=%s\n", pidStr)
 
-	testCapIoperm := testutils.RepoRootPath("contrib/tester-progs/capabilities-ioperm")
+	testCapIoperm := repo.RootPath("contrib/tester-progs/capabilities-ioperm")
 	capabilityhook_ := `
 apiVersion: cilium.io/v1alpha1
 kind: TracingPolicy

@@ -15,7 +15,7 @@ import (
 
 	"github.com/cilium/tetragon/pkg/jsonchecker"
 	"github.com/cilium/tetragon/pkg/observer/observertesthelper"
-	"github.com/cilium/tetragon/pkg/testutils"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 	tus "github.com/cilium/tetragon/pkg/testutils/sensors"
 	"github.com/cilium/tetragon/pkg/tetragoninfo"
 )
@@ -53,7 +53,7 @@ func (rpt *RegisteredPolicyTests) DoObserverTest(
 	defer cancel()
 
 	conf := &Conf{
-		BinsDir: testutils.RepoRootPath("contrib/tester-progs"),
+		BinsDir: repo.RootPath("contrib/tester-progs"),
 		TestConf: &TestConf{
 			ParamValues: params,
 		},

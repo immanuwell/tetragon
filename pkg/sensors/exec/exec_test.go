@@ -55,6 +55,7 @@ import (
 	"github.com/cilium/tetragon/pkg/strutils"
 	"github.com/cilium/tetragon/pkg/testutils"
 	"github.com/cilium/tetragon/pkg/testutils/perfring"
+	"github.com/cilium/tetragon/pkg/testutils/repo"
 	tus "github.com/cilium/tetragon/pkg/testutils/sensors"
 )
 
@@ -237,7 +238,7 @@ func TestNamespaces(t *testing.T) {
 }
 
 func testEventExitThreads(t *testing.T) {
-	testThreadsExit := testutils.RepoRootPath("contrib/tester-progs/threads-exit")
+	testThreadsExit := repo.RootPath("contrib/tester-progs/threads-exit")
 
 	// array of all pids we shuold receive in exet events
 	tgids := make(map[int]bool)
@@ -309,7 +310,7 @@ func testEventExitThreads(t *testing.T) {
 }
 
 func testEventExecve(t *testing.T) {
-	testNop := testutils.RepoRootPath("contrib/tester-progs/nop")
+	testNop := repo.RootPath("contrib/tester-progs/nop")
 
 	myCaps := ec.NewCapabilitiesChecker().FromCapabilities(caps.GetCurrentCapabilities())
 	myNs := ec.NewNamespacesChecker().FromNamespaces(namespace.GetCurrentNamespace())
@@ -342,7 +343,7 @@ func testEventExecveWithUsername(t *testing.T) {
 		t.Skip()
 	}
 
-	testNop := testutils.RepoRootPath("contrib/tester-progs/nop")
+	testNop := repo.RootPath("contrib/tester-progs/nop")
 
 	myCaps := ec.NewCapabilitiesChecker().FromCapabilities(caps.GetCurrentCapabilities())
 	myNs := ec.NewNamespacesChecker().FromNamespaces(namespace.GetCurrentNamespace())
@@ -369,7 +370,7 @@ func testEventExecveWithUsername(t *testing.T) {
 }
 
 func testEventExecveLongPath(t *testing.T) {
-	testNop := testutils.RepoRootPath("contrib/tester-progs/nop")
+	testNop := repo.RootPath("contrib/tester-progs/nop")
 
 	// create dir portion of path
 	baseDir := "/tmp/tetragon-execvetest/"
@@ -438,7 +439,7 @@ func testEventExecveLongPath(t *testing.T) {
 }
 
 func testEventExecveLongArgs(t *testing.T) {
-	testNop := testutils.RepoRootPath("contrib/tester-progs/nop")
+	testNop := repo.RootPath("contrib/tester-progs/nop")
 
 	// prepare args
 	testArg1 := "arg1_"
@@ -472,7 +473,7 @@ func testEventExecveLongArgs(t *testing.T) {
 }
 
 func testEventExecveLongPathLongArgs(t *testing.T) {
-	testNop := testutils.RepoRootPath("contrib/tester-progs/nop")
+	testNop := repo.RootPath("contrib/tester-progs/nop")
 
 	// create dir portion of path
 	baseDir := "/tmp/tetragon-execvetest/"
@@ -1145,7 +1146,7 @@ func TestExecParse(t *testing.T) {
 
 // Tests process.process_credentials
 func testExecProcessCredentials(t *testing.T) {
-	testNop := testutils.RepoRootPath("contrib/tester-progs/nop")
+	testNop := repo.RootPath("contrib/tester-progs/nop")
 
 	if err := exec.Command(testNop).Run(); err != nil {
 		t.Fatalf("Failed to execute test binary: %s\n", err)
@@ -1202,9 +1203,9 @@ func testExecProcessCredentials(t *testing.T) {
 // Test ensures that running as fully privileged root and executing a setuid or
 // setgid to root does not generate a binary_properties setuid field nor privs_changed fields.
 func testExecProcessCredentialsSuidRootNoPrivsChange(t *testing.T) {
-	testBin := testutils.RepoRootPath("contrib/tester-progs/nop")
+	testBin := repo.RootPath("contrib/tester-progs/nop")
 	// We should be able to create suid on local mount point
-	testSuid := testutils.RepoRootPath("contrib/tester-progs/suidnop")
+	testSuid := repo.RootPath("contrib/tester-progs/suidnop")
 	if err := testutils.CopyFile(testSuid, testBin, 0754|os.ModeSetuid|os.ModeSetgid); err != nil {
 		t.Fatalf("Failed to copy binary: %s", err)
 	}
@@ -1256,9 +1257,9 @@ func testExecProcessCredentialsSuidRootNoPrivsChange(t *testing.T) {
 //     not report as a privilege changed execution as the target group
 //     is not root.
 func testExecProcessCredentialsSetgidChanges(t *testing.T) {
-	testBin := testutils.RepoRootPath("contrib/tester-progs/nop")
+	testBin := repo.RootPath("contrib/tester-progs/nop")
 	// We should be able to create suid on local mount point
-	testSuid := testutils.RepoRootPath("contrib/tester-progs/suidnop")
+	testSuid := repo.RootPath("contrib/tester-progs/suidnop")
 	if err := testutils.CopyFile(testSuid, testBin, 0754|os.ModeSetuid|os.ModeSetgid); err != nil {
 		t.Fatalf("Failed to copy binary: %s", err)
 	}
@@ -1359,17 +1360,17 @@ func testExecProcessCredentialsSetgidChanges(t *testing.T) {
 //     the setuid bit set + the privileges changed due to the setuid bit
 //     being set to root.
 func testExecProcessCredentialsSetuidChanges(t *testing.T) {
-	testBin := testutils.RepoRootPath("contrib/tester-progs/nop")
+	testBin := repo.RootPath("contrib/tester-progs/nop")
 	// The drop-privileges is a helper binary that drops privileges so we do not
 	// drop it inside this test which will break the test framework.
-	testDrop := testutils.RepoRootPath("contrib/tester-progs/drop-privileges")
+	testDrop := repo.RootPath("contrib/tester-progs/drop-privileges")
 	testSu, err := exec.LookPath("su")
 	if err != nil {
 		t.Skip("Could not find 'su' binary skipping")
 	}
 	// We should be able to create suid on local mount point
 	// This binary will have setuid set to non root.
-	testSuid := testutils.RepoRootPath("contrib/tester-progs/suidnop")
+	testSuid := repo.RootPath("contrib/tester-progs/suidnop")
 	if err := testutils.CopyFile(testSuid, testBin, 0755|os.ModeSetuid|os.ModeSetgid); err != nil {
 		t.Fatalf("Failed to copy binary: %s", err)
 	}
@@ -1440,7 +1441,7 @@ func testExecProcessCredentialsSetuidChanges(t *testing.T) {
 func testExecProcessCredentialsFileCapChanges(t *testing.T) {
 	// The drop-privileges is a helper binary that drops privileges so we do not
 	// drop it inside this test which will break the test framework.
-	testDrop := testutils.RepoRootPath("contrib/tester-progs/drop-privileges")
+	testDrop := repo.RootPath("contrib/tester-progs/drop-privileges")
 	testPing, err := exec.LookPath("ping")
 	if err != nil {
 		t.Skipf("Skipping test could not find 'ping' binary: %v", err)
@@ -1671,7 +1672,7 @@ func TestThrottle2(t *testing.T) {
 
 // Verify that we get all the process environment variables
 func testEventExecveEnvs(t *testing.T) {
-	testNop := testutils.RepoRootPath("contrib/tester-progs/nop")
+	testNop := repo.RootPath("contrib/tester-progs/nop")
 
 	procChecker := ec.NewProcessChecker().
 		WithBinary(sm.Full(testNop)).
@@ -1702,7 +1703,7 @@ func testEventExecveEnvsFilter(t *testing.T) {
 	option.Config.FilterEnvironmentVariables["TEST_VAR1"] = struct{}{}
 	option.Config.FilterEnvironmentVariables["TEST_VAR2"] = struct{}{}
 
-	testNop := testutils.RepoRootPath("contrib/tester-progs/nop")
+	testNop := repo.RootPath("contrib/tester-progs/nop")
 
 	procChecker := ec.NewProcessChecker().
 		WithBinary(sm.Full(testNop)).
@@ -1739,7 +1740,7 @@ func testEventExecveEnvsFilterRedact(t *testing.T) {
 	fieldfilters.RedactionFilters, err = fieldfilters.ParseRedactionFilterList(`{"redact": ["(?:TEST_VAR1)[\\s=]+(\\S+)"]}`)
 	require.NoError(t, err)
 
-	testNop := testutils.RepoRootPath("contrib/tester-progs/nop")
+	testNop := repo.RootPath("contrib/tester-progs/nop")
 
 	procChecker := ec.NewProcessChecker().
 		WithBinary(sm.Full(testNop)).
